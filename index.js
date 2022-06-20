@@ -14,7 +14,7 @@ server.get('/tweets/:USERNAME',(req,res)=>{
         res.send(tweetUser)
 })
 server.post('/sign-up',(req,res)=>{
-    if(req.body.username===""||req.body.avatar===""){
+    if(!req.body.username||!req.body.avatar){
         res.status(400).send("Todos os campos são obrigatórios!")
     } else{
         res.status(201).send("OK")     
@@ -22,11 +22,16 @@ server.post('/sign-up',(req,res)=>{
     }
 })
 server.post('/tweets',(req,res)=>{
-    if(req.body.username===""||req.body.tweet===""){
+    if(!req.headers.user||!req.body.tweet){
         res.status(400).send("Todos os campos são obrigatórios!")
     } else{
         res.status(201).send("OK")
-        tweet.push(req.body)
+        const obj={
+            username:req.headers.user,
+            avatar:req.body.avatar,
+            tweet:req.body.tweet
+        }
+        tweet.push(obj)
     }
 })
 
